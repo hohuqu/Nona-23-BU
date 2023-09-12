@@ -1,7 +1,8 @@
 # Nona-23-BU
-Twist Problem 1 Ginkgo 1,3 Nona 1
 
-NonaWorks 2023
+## NonaWorks 2023 - Software x Biology Hackathon
+
+September 2023
 
 Collaborators: Quan Huu Ho, Phuong Khanh Tran (Jade)
 
