@@ -1,9 +1,14 @@
-# Nona-23-BU
-
-## NonaWorks 2023 - Software x Biology Hackathon
+# NonaWorks 2023 - Software x Biology Hackathon
 
 September 2023
 
-Collaborators: Quan Huu Ho, Phuong Khanh Tran (Jade)
+## Collaborators
+Quan Huu Ho, Phuong Khanh Tran (Jade)
 
-Project: 
+## Project Title
+
+## Project Description
+
+## References
+
+
