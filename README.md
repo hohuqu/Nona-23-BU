@@ -1,6 +1,6 @@
 # Nona-23-BU
 
-## NonaWorks 2023 - Software x Biology Hackathon
+NonaWorks 2023 - Software x Biology Hackathon
 
 September 2023
 
