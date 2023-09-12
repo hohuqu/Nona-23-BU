@@ -2,6 +2,38 @@ import os
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
+def oligo_to_dna(oligo):
+    """
+    Convert an oligonucleotide to a DNA sequence.
+
+    Args:
+        oligo (str): Oligonucleotide sequence using single-letter codes.
+
+    Returns:
+        str: DNA sequence.
+    """
+    conversion_dict = {
+        'A': 'A',
+        'C': 'C',
+        'G': 'G',
+        'T': 'T',
+        'U': 'T',  # Assuming U (uracil) is converted to T (thymine)
+        'R': 'AG',  # Purine (A or G)
+        'Y': 'CT',  # Pyrimidine (C or T)
+        'M': 'AC',  # Amino (A or C)
+        'K': 'GT',  # Keto (G or T)
+        'S': 'CG',  # Strong interaction (C or G)
+        'W': 'AT',  # Weak interaction (A or T)
+        'B': 'CGT',  # Not A (C or G or T)
+        'D': 'AGT',  # Not C (A or G or T)
+        'H': 'ACT',  # Not G (A or C or T)
+        'V': 'ACG',  # Not T/U (A or C or G)
+        'N': 'ACGT'  # Any base (A or C or G or T)
+    }
+
+    dna_sequence = ''.join(conversion_dict.get(base, '') for base in oligo.upper())
+    return dna_sequence
+
 class SeqRecord:
     '''
     Encapsulates both the sequence and features of a given
