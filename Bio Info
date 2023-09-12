@@ -22,7 +22,7 @@ def oligo_to_dna(oligo):
         'Y': 'CT',  # Pyrimidine (C or T)
         'M': 'AC',  # Amino (A or C)
         'K': 'GT',  # Keto (G or T)
-        'S': 'CG',  # Strong interaction (C or G)
+        'S': 'GC',  # Strong interaction (C or G)
         'W': 'AT',  # Weak interaction (A or T)
         'B': 'CGT',  # Not A (C or G or T)
         'D': 'AGT',  # Not C (A or G or T)
