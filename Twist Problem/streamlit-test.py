@@ -33,6 +33,8 @@ if uploaded_file is not None:
         st.write(output2)
         output3 = "List the possible recombinant DNA molecules" # switch to function
         st.write(output3)
+        output4 = "List of combinations of oligos and a product that can be harzadous"
+        st.write(output4)
       
     # Restriction
     st.markdown('## <span style="font-size:30px;">Restriction Assembly</span>', unsafe_allow_html=True)
@@ -45,6 +47,8 @@ if uploaded_file is not None:
         st.write(output2)
         output3 = "Ouput 3" # switch to function
         st.write(output3)
+        output4 = "Output 4" # switch to function
+        st.write(output4)
     
     # Gibson Assesmbly
     st.markdown('## <span style="font-size:30px;">Gibson Assembly</span>', unsafe_allow_html=True)
@@ -57,4 +61,6 @@ if uploaded_file is not None:
         st.write(output2)
         output3 = "Ouput 3" # switch to function
         st.write(output3)
+        output4 = "Output 4" # switch to function
+        st.write(output4)
     
