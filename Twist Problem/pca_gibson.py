@@ -9,6 +9,7 @@ import itertools
 
 from Bio import pairwise2
 from Bio.Seq import Seq
+from Bio import SeqIO
 
 
 # Function to find duplicate regions
@@ -109,8 +110,10 @@ if __name__ == '__main__':
     sequence1 = Seq('TCCCTGGGCTCTTTTAGTGGACGGAGACCCAGCTGTCAGTTTGTTGTAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     sequence2 = Seq('CTGCCCAAGCCTACCGTGAATCATCTAATCCCTCCATGGAGTAAGTGGTGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
     min_duplicate_length = 20  # Standard
+    with open('data/sample3.fasta') as f:
+        seqs = [s.seq for s in SeqIO.FastaIO.FastaIterator(f)][1:]
 
-    combined_sequences = PCA2([sequence1, sequence2], min_duplicate_length)
+    combined_sequences = PCA2(seqs, min_duplicate_length)
     print(combined_sequences)
 
     # Example usage Gibson:
