@@ -6,11 +6,8 @@ Created on Wed Sep 13 20:51:09 2023
 """
 
 from Bio import pairwise2
+from Bio.Seq import Seq
 
-# Function to find the complement of a DNA sequence
-def find_complement(sequence):
-    complement_dict = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
-    return ''.join(complement_dict[base] for base in sequence)
 
 # Function to find duplicate regions
 def find_duplicates(sequence1, sequence2, min_duplicate_length):
@@ -25,16 +22,11 @@ def find_duplicates(sequence1, sequence2, min_duplicate_length):
                     duplicates.append(subsequence1)
     return list(set(duplicates))
 
-# Function to read a DNA sequence from a file
-def read_sequence_from_file(filename):
-    with open(filename, 'r') as file:
-        return file.read().strip()
 
 # Function to process two DNA sequences and find duplicates
-def PCA(file1, file2, min_duplicate_length):
+def PCA(sequence1, sequence2, min_duplicate_length):
     # Read sequences from files
-    sequence1 = read_sequence_from_file(file1)
-    sequence2 = find_complement(read_sequence_from_file(file2))[::-1]
+    sequence2 = sequence2.reverse_complement()
 
     # Find duplicate regions
     duplicates = find_duplicates(sequence1, sequence2, min_duplicate_length)
@@ -62,19 +54,8 @@ def PCA(file1, file2, min_duplicate_length):
 
     return combine
 
-# Example usage PCA:
-file1 = "oligo.txt"
-file2 = "oligo2.txt"
-min_duplicate_length = 20 #Standard
 
-combined_sequences = PCA(file1, file2, min_duplicate_length)
-print(combined_sequences)
-
-def Gibson(file1, file2, min_duplicate_length):
-    # Read sequences from files
-    sequence1 = read_sequence_from_file(file1)
-    sequence2 = read_sequence_from_file(file2)
-
+def Gibson(sequence1, sequence2, min_duplicate_length):
     # Find duplicate regions
     duplicates = find_duplicates(sequence1, sequence2, min_duplicate_length)
 
@@ -101,10 +82,18 @@ def Gibson(file1, file2, min_duplicate_length):
 
     return combine
 
-# Example usage Gibson:
-file1 = "oligo.txt"
-file2 = "oligo2.txt"
-min_duplicate_length = 15 #Standard
 
-combined_sequences = Gibson(file1, file2, min_duplicate_length)
-print(combined_sequences)
+if __name__ == '__main__':
+    # Example usage PCA:
+    sequence1 = Seq('TCCCTGGGCTCTTTTAGTGGACGGAGACCCAGCTGTCAGTTTGTTGTAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+    sequence2 = Seq('CTGCCCAAGCCTACCGTGAATCATCTAATCCCTCCATGGAGTAAGTGGTGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
+    min_duplicate_length = 20  # Standard
+
+    combined_sequences = PCA(sequence1, sequence2, min_duplicate_length)
+    print(combined_sequences)
+
+    # Example usage Gibson:
+    min_duplicate_length = 15  # Standard
+
+    combined_sequences = Gibson(sequence1, sequence2, min_duplicate_length)
+    print(combined_sequences)
