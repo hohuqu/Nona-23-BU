@@ -26,8 +26,11 @@ https://docs.google.com/presentation/d/1wh1UimAxOS5B4HWA8eUSIt-bICXVbQhdXA2GiGQE
 ## Dependencies
 
 Python3
+
 BioPython
+
 tqdm
+
 Streamlit
 
 ## Restriction-Ligation
