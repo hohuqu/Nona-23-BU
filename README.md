@@ -23,6 +23,13 @@ https://docs.google.com/presentation/d/1wh1UimAxOS5B4HWA8eUSIt-bICXVbQhdXA2GiGQE
 
 # Documentation
 
+## Dependencies
+
+Python3
+BioPython
+tqdm
+Streamlit
+
 ## Restriction-Ligation
 
 Our restriction-ligation algorithm is included in "Twist Problem"/restriction_site.py.
