@@ -9,7 +9,7 @@ Nearly Finite Possibilities
 Quan Huu Ho, Phuong Khanh Tran (Jade), Payton J Thomas, Taos Transue, Yehuda Binik
 
 ## Project Title
-BioGenius
+BioGeneius
 
 ## Project Description
 
