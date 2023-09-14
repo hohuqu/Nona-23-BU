@@ -5,6 +5,8 @@ Created on Wed Sep 13 20:51:09 2023
 @author: ji619
 """
 
+import itertools
+
 from Bio import pairwise2
 from Bio.Seq import Seq
 
@@ -21,6 +23,25 @@ def find_duplicates(sequence1, sequence2, min_duplicate_length):
                 if best_alignment[2] >= min_duplicate_length:
                     duplicates.append(subsequence1)
     return list(set(duplicates))
+
+
+def PCA2(seqs, min_duplicate_length, max_recur=2):
+    res = []
+
+    def _PCA(seq_list, recur=1):
+        if recur == max_recur:
+            res.extend(seq_list)
+            print(len(res), len(seq_list))
+            return
+        for s1, s2 in itertools.product(seq_list, seqs):
+            _PCA(PCA(s1, s2, min_duplicate_length), recur=recur + 1)
+
+    for i in range(len(seqs)):
+        for j in range(len(seqs)):
+            if i < j:
+                _PCA(PCA(seqs[i], seqs[j], min_duplicate_length))
+
+    return res
 
 
 # Function to process two DNA sequences and find duplicates
@@ -89,11 +110,11 @@ if __name__ == '__main__':
     sequence2 = Seq('CTGCCCAAGCCTACCGTGAATCATCTAATCCCTCCATGGAGTAAGTGGTGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
     min_duplicate_length = 20  # Standard
 
-    combined_sequences = PCA(sequence1, sequence2, min_duplicate_length)
+    combined_sequences = PCA2([sequence1, sequence2], min_duplicate_length)
     print(combined_sequences)
 
     # Example usage Gibson:
     min_duplicate_length = 15  # Standard
 
     combined_sequences = Gibson(sequence1, sequence2, min_duplicate_length)
-    print(combined_sequences)
+    # print(combined_sequences)
