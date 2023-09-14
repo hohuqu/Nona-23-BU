@@ -31,7 +31,7 @@ def read_sequence_from_file(filename):
         return file.read().strip()
 
 # Function to process two DNA sequences and find duplicates
-def find_and_combine_duplicates(file1, file2, min_duplicate_length):
+def PCA(file1, file2, min_duplicate_length):
     # Read sequences from files
     sequence1 = read_sequence_from_file(file1)
     sequence2 = find_complement(read_sequence_from_file(file2))[::-1]
