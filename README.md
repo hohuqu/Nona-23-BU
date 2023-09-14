@@ -13,7 +13,7 @@ The Team of Nearly Finite Possibilities
 * Yehuda Binik – BS Computer Science, Rhode Island College
 
 ## Project Title
-BioGeneius
+BioGenius
 
 ## Project Description
 Developing a tool for enumerating sequences from a set of oligos submitted to a DNA printing core is a crucial project at the intersection of bioengineering and biosecurity. BioGenius leverages common cloning techniques to predict the potential DNA sequences that could be constructed from provided oligos, offering a valuable resource for ensuring the safety and security of genetic material synthesis. By enabling the rapid identification and evaluation of sequences, this project not only aids in responsible research but also contributes to safeguarding against the synthesis of potentially hazardous genetic material.
