@@ -30,7 +30,7 @@ def equivalences(stuff, equiv_rel):
                 found = True
         if not found:
             equivalences.append([e])
-    return {e[0]: e for i, e in enumerate(equivalences)}
+    return {str(e[0]): e for i, e in enumerate(equivalences)}
 
 
 BLUNT_EXAMPLE = rst.BsrBI
@@ -89,7 +89,7 @@ def with_sites_inverse(d):
 def sites_to_equiv_reps(a, equiv_2p):
     res = {}
     for e, sites in a.with_sites().items():
-        k = next((k for k in equiv_2p if e % k), None)
+        k = next((k for k in equiv_2p if e % rst.AllEnzymes.get(k)), None)
         if k:
             res[k] = sites
     return res
@@ -102,7 +102,7 @@ def digestion_ligation(seqs, enzymes_2p, equiv_2p):
         sites = sites_to_equiv_reps(a, equiv_2p)
         inverse = with_sites_inverse(sites)
         for es in tqdm(itertools.product(*inverse.values())):
-            chew_seq(s, es, frags)
+            chew_seq(s, list(map(rst.AllEnzymes.get, es)), frags)
     return set(frags)
 
 
