@@ -67,5 +67,5 @@ file1 = "oligo.txt"
 file2 = "oligo2.txt"
 min_duplicate_length = 20
 
-combined_sequences = find_and_combine_duplicates(file1, file2, min_duplicate_length)
+combined_sequences = PCA(file1, file2, min_duplicate_length)
 print(combined_sequences)
