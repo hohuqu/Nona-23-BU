@@ -62,10 +62,49 @@ def PCA(file1, file2, min_duplicate_length):
 
     return combine
 
-# Example usage:
+# Example usage PCA:
 file1 = "oligo.txt"
 file2 = "oligo2.txt"
-min_duplicate_length = 20
+min_duplicate_length = 20 #Standard
 
 combined_sequences = PCA(file1, file2, min_duplicate_length)
+print(combined_sequences)
+
+def Gibson(file1, file2, min_duplicate_length):
+    # Read sequences from files
+    sequence1 = read_sequence_from_file(file1)
+    sequence2 = read_sequence_from_file(file2)
+
+    # Find duplicate regions
+    duplicates = find_duplicates(sequence1, sequence2, min_duplicate_length)
+
+    # Create sequence1a and sequence2a lists
+    sequence1a_list = []
+    sequence2a_list = []
+
+    # Create sequence1a by ending in each duplicate value in sequence1
+    for duplicate_value in duplicates:
+        if duplicate_value in sequence1:
+            end_index = sequence1.rindex(duplicate_value) + len(duplicate_value)
+            sequence1a = sequence1[:end_index]
+            sequence1a_list.append(sequence1a)
+
+    # Create sequence2a by starting from each duplicate value in sequence2
+    for duplicate_value in duplicates:
+        if duplicate_value in sequence2:
+            start_index = sequence2.index(duplicate_value) + len(duplicate_value)
+            sequence2a = sequence2[start_index:]
+            sequence2a_list.append(sequence2a)
+
+    # Combine sequence1a and sequence2a
+    combine = [a + b for a, b in zip(sequence1a_list, sequence2a_list)]
+
+    return combine
+
+# Example usage Gibson:
+file1 = "oligo.txt"
+file2 = "oligo2.txt"
+min_duplicate_length = 15 #Standard
+
+combined_sequences = Gibson(file1, file2, min_duplicate_length)
 print(combined_sequences)
