@@ -52,17 +52,17 @@ def chew_seq(seq, enzymes, frags):
     prev_e = None
     blunt_example = rst.BsrBI
     for i, e in enumerate(enzymes):
-        s1, s2 = e.catalyze(seq)
+        s1, s2 = e.catalyze(seq)  # FIXME: may cut more!!
         seq = s2
         if i == 0:
-            e1 = rst.BsrBI
+            e1 = blunt_example
             e2 = e
         elif i == len(enzymes) - 1:
-            e1 = prev_e
-            e2 = rst.BsrBI)
+            e1 = e
+            e2 = blunt_example
         else:
             e1 = prev_e
-            e2 = End(..., e)
+            e2 = e
         prev_e = e
         frags.append(Fragment(Seq(s1), e1, e2))
     return frags
@@ -70,14 +70,9 @@ def chew_seq(seq, enzymes, frags):
 
 def digestion_ligation(seqs, enzymes_2p, equiv_2p):
     analyses = {i: rst.Analysis(enzymes_2p, s) for i, s in enumerate(seqs)}
-    equiv_classes = defaultdict(set)
     for i, a in analyses.items():
         for e in a.with_sites():
-            k = next((k for k in equiv_2p if e % k), None)
-            if k:
-                equiv_classes[i].add(k)
-    breakpoint()
-    assert all(len(s) == 1 for s in equiv_classes.values()), equiv_classes
+            pass
 
 
 def main():
