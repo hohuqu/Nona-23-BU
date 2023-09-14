@@ -46,3 +46,6 @@ Our Gibson assembly algorithm is included in "Twist Problem"/pca_gibson.py.
 The algorithm finds homologous sequences at the opposite-polarity ends of two oligos of at least 15bp in length (in accordance with the GeneArt Seamless Cloning protocol for Gibson Assembly). Gibson assembly is simulated between these two oligos to form an assembly that is saved. All possible Gibson assemblies are calculated.
 
 Note that this algorithm may only be applied pair-wise. 
+
+## Instruction
+To run the user interface, run command '''streamlit run gui.py''' in terminal
