@@ -27,22 +27,22 @@ https://docs.google.com/presentation/d/1wh1UimAxOS5B4HWA8eUSIt-bICXVbQhdXA2GiGQE
 
 Our restriction-ligation algorithm is included in "Twist Problem"/restriction_site.py.
 
-The algorithm simulates the complete digestion of any number of input oligos using Biopython for all known TypeIIP endonucleases. This creates a large set of minimal DNA fragments, each annotated with its 5' and 3' end compatability. We also perform all alternative digests in the case when restriction sites interfere with one another. To reduce time complexity, our algorithm divides endonucleases into equivalence classes of isoschizomers and considers only one representative isoschizomer from each class. 
+The algorithm simulates the complete digestion of any number of input oligos using BioPython for all known TypeIIP endonucleases. This creates a large set of minimal DNA fragments, each annotated with its 5' and 3' end compatability. We also perform all alternative digests in the case when restriction sites interfere with one another. To reduce time complexity, our algorithm divides endonucleases into equivalence classes of isoschizomers and considers only one representative isoschizomer from each class. 
 
-Our algorithm then traverses the tree of possible assemblies that may be made by ligating these fragments (given their end compatabilities). To make the tree of possible molecules finite, we stop ligating assemblies once they reach 25-30 bp in length. These 25-30bp assemblies may be compared to a database of hazardous DNA molecules (BLAST advises that search sequences be at least 22bp in length).
+Our algorithm then traverses the tree of possible assemblies that may be made by ligating these fragments (given their end compatibilities). To make the tree of possible molecules finite, we stop ligating assemblies once they reach 25-30 bp in length. These 25-30bp assemblies may be compared to a database of hazardous DNA molecules (BLAST advises that search sequences be at least 22bp in length).
 
-## Polymerase Cycling Assembly
+## Polymerase Cycling Assembly (PCA)
 
-Our polymerase cycling assembly algorithm is included in "Twist Problem"/pca_gibson.py.
+Our Polymerase Cycling Assembly (PCA) algorithm is included in "Twist Problem"/pca_gibson.py.
 
-The algorithm identifies regions of complementarity one oligo and the reverse compliment of another oligo, as in PCA. The algorithm only considers regions of complementarity of at least 20bp, in accordance with conventional cloning wisdom. If sufficient overlaps are identified, the PCA reaciton is simulated and the resulting assembly is saved. All possible PCA assemblies produced from two input oligos are calculated. 
+The algorithm identifies regions of complementarity of one oligo and the reverse complement of another oligo, as in PCA. The algorithm only considers regions of complementarity of at least 20bp, in accordance with conventional cloning wisdom. If sufficient overlaps are identified, the PCA reaction is simulated, and the resulting assembly is saved. All possible PCA assemblies produced from two input oligos are calculated. 
 
 Note that this algorithm may only be applied pair-wise. 
 
 ## Gibson Assembly
 
-Our gibson assembly algorithm is included in "Twist Problem"/pca_gibson.py.
+Our Gibson assembly algorithm is included in "Twist Problem"/pca_gibson.py.
 
-The algorithm finds homologous sequences at the opposite-polarity ends of two oligos of at least 15bp in length (in accordance with the GeneArt Seamless Cloning protocol for Gibson Assembly). Gibson assembly is simulated between these two oligos to form an assembly that is saved. All possible gibson assemblies are calculated.
+The algorithm finds homologous sequences at the opposite-polarity ends of two oligos of at least 15bp in length (in accordance with the GeneArt Seamless Cloning protocol for Gibson Assembly). Gibson assembly is simulated between these two oligos to form an assembly that is saved. All possible Gibson assemblies are calculated.
 
-Note that thsi algorithm may only be applied pair-wise. 
+Note that this algorithm may only be applied pair-wise. 
