@@ -48,5 +48,5 @@ The algorithm finds homologous sequences at the opposite-polarity ends of two ol
 Note that this algorithm may only be applied pair-wise. 
 
 ## Instruction
-To run the user interface, run this command in the terminal:
+To open the user interface, run this command in the terminal:
 > streamlit run gui.py
