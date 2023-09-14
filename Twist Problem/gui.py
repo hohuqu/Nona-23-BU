@@ -75,7 +75,7 @@ if uploaded_file is not None:
             else:
                 st.write(output)
 
-        # Download the output as either text or fasta file
+        # Download the output as fasta file
         output_strings = []
         if output != []:
             if option == 'Polymerase Cycling Assembly (PCA)':
