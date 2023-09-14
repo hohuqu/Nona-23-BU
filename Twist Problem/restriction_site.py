@@ -33,9 +33,10 @@ def equivalences(stuff, equiv_rel):
     return {str(e[0]): e for i, e in enumerate(equivalences)}
 
 
+ALL_ENZYMES = {str(e): e for e in rst.AllEnzymes}
 BLUNT_EXAMPLE = rst.BsrBI
-ENZYMES_2P = [e for e in rst.AllEnzymes if not is2s(e)]
-ENZYMES_2S = [e for e in rst.AllEnzymes if is2s(e)]
+ENZYMES_2P = [e for e in ALL_ENZYMES.values() if not is2s(e)]
+ENZYMES_2S = [e for e in ALL_ENZYMES.values() if is2s(e)]
 ISOCLASS = equivalences(ENZYMES_2P, lambda e1, e2: (e1 % e2) and e1.is_equischizomer(e2))
 
 
@@ -89,7 +90,7 @@ def with_sites_inverse(d):
 def sites_to_equiv_reps(a, equiv_2p):
     res = {}
     for e, sites in a.with_sites().items():
-        k = next((k for k in equiv_2p if e % rst.AllEnzymes.get(k)), None)
+        k = next((k for k in equiv_2p if e % ALL_ENZYMES.get(k)), None)
         if k:
             res[k] = sites
     return res
@@ -102,7 +103,8 @@ def digestion_ligation(seqs, enzymes_2p, equiv_2p):
         sites = sites_to_equiv_reps(a, equiv_2p)
         inverse = with_sites_inverse(sites)
         for es in tqdm(itertools.product(*inverse.values())):
-            chew_seq(s, list(map(rst.AllEnzymes.get, es)), frags)
+            chew_seq(s, list(map(ALL_ENZYMES.get, es)), frags)
+    print(f'{len(frags)=}')  # , {len(set(frags))=}')
     return set(frags)
 
 
