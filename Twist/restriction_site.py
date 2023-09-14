@@ -8,7 +8,7 @@ import Bio.Restriction as rst
 from tqdm import tqdm
 
 
-def is2s(e):
+def is2s(e): #given enzyme e (of type RestrictionType), determines if it is TypeIIS by examining its recongition sequence
     """
     Is Type 2 enzyme
     """
@@ -20,7 +20,7 @@ def is2s(e):
     return False
 
 
-def equivalences(stuff, equiv_rel):
+def equivalences(stuff, equiv_rel): #Forms dictionary of equivalence classes on set 'stuff' given any equivalence relation 'equiv_rel.' We form equivalence classes for isoschizomerism as well as compatible ends
     equivalences = []
     for e in stuff:
         found = False
@@ -40,7 +40,7 @@ ENZYMES_2S = [e for e in ALL_ENZYMES.values() if is2s(e)]
 ISOCLASS = equivalences(ENZYMES_2P, lambda e1, e2: (e1 % e2) and e1.is_equischizomer(e2))
 
 
-class Fragment(NamedTuple):
+class Fragment(NamedTuple): #A fragment object is a Biopython sequence along with ligation compatability information for both of its ends. 
     seq: Seq
     end5: object  # enzyme
     end3: object  # enzyme
@@ -56,7 +56,7 @@ class Fragment(NamedTuple):
         return Fragment(self.seq + other.seq, self.end5, other.end3)
 
 
-def chew_seq(seq, enzymes, frags):
+def chew_seq(seq, enzymes, frags): #This function finds all fragments created by all possible digestions of 'seq' using the enzymes in 'enzymes' and appends them to 'frags'
     BLUNT_EXAMPLE = rst.BsrBI
     prev_e = BLUNT_EXAMPLE
     for i, e in enumerate(enzymes):
@@ -79,7 +79,7 @@ def chew_seq(seq, enzymes, frags):
     return frags
 
 
-def with_sites_inverse(d):
+def with_sites_inverse(d): 
     res = defaultdict(list)
     for e, sites in d.items():
         for s in sites:
@@ -108,7 +108,7 @@ def digestion_ligation(seqs, enzymes_2p, equiv_2p):
     return set(frags)
 
 
-def build(frags, max_recur):
+def build(frags, max_recur): #
     seqs = []
 
     def _build(seq, end5, recur=1):
@@ -123,12 +123,12 @@ def build(frags, max_recur):
     return seqs
 
 
-def restriction(sequence1, sequence2, max_recur=5):
+def restriction(sequence1, sequence2, max_recur=5): #
     frags = digestion_ligation([sequence1, sequence2], ENZYMES_2P, ISOCLASS)
     return build(frags, max_recur)
 
 
-def main():
+def main(): #tests on simple sequences
     seq1 = Seq('TCCCTGGGCTCTTTTAGTGGACGGAGACCCAGCTGTCAGTTTGTTGTAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     seq2 = Seq('CTGCCCAAGCCTACCGTGAATCATCTAATCCCTCCATGGAGTAAGTGGTGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
     # seq1 = Seq('AAAAAGATCCAAAAAA')
@@ -136,5 +136,5 @@ def main():
     print(len(restriction(seq1, seq2)))
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': #ensure 
     main()
