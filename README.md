@@ -6,11 +6,11 @@ September 2023
 The Team of Nearly Finite Possibilities
 
 ## Collaborators
-Quan Huu Ho -- MS Biomedical Engineering, Boston University
-Phuong Khanh Tran (Jade) -- MS Electrical and Computer Engineering, Boston University
-Payton J Thomas -- PhD Bioengineering, UC San Diego
-Taos Transue -- PhD Mathematics, University of Utah
-Yehuda Binik -- BS Computer Science, Rhode Island College
+* Quan Huu Ho -- MS Biomedical Engineering, Boston University
+* Phuong Khanh Tran (Jade) -- MS Electrical and Computer Engineering, Boston University
+* Payton J Thomas -- Ph.D. Bioengineering, UC San Diego
+* Taos Transue -- Ph.D. Mathematics, University of Utah
+* Yehuda Binik -- BS Computer Science, Rhode Island College
 
 ## Project Title
 BioGenius
