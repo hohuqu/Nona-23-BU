@@ -13,9 +13,7 @@ BioGeneius
 
 ## Project Description
 
+
 ## Project Presentation
 https://docs.google.com/presentation/d/1wh1UimAxOS5B4HWA8eUSIt-bICXVbQhdXA2GiGQE_eo/edit?usp=sharing
-
-## References
-
 
