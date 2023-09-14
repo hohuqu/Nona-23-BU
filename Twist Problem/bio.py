@@ -2,25 +2,10 @@ from collections import defaultdict
 import re
 import itertools
 from typing import NamedTuple
-import pandas as pd
+
 from Bio.Seq import Seq
 import Bio.Restriction as rst
-
-
-class Fragment(NamedTuple):
-    seq: Seq
-    end5: rst.RestrictionType
-    end3: rst.RestrictionType
-
-    def can_ligate(self, other):
-        compat = self.end3.compat % other.end5.compat
-        overhang_zero = self.overhang + other.overhang == 0
-        return compat and overhang_zero
-
-    def ligate(self, other):
-        if not self.can_ligate(other):
-            raise ValueError('Cannot ligate')
-        return Fragment(self.seq + other.seq, self.end5, other.end3)
+from tqdm import tqdm
 
 
 def is2s(e):
@@ -48,51 +33,105 @@ def equivalences(stuff, equiv_rel):
     return {e[0]: e for i, e in enumerate(equivalences)}
 
 
+BLUNT_EXAMPLE = rst.BsrBI
+ENZYMES_2P = [e for e in rst.AllEnzymes if not is2s(e)]
+ENZYMES_2S = [e for e in rst.AllEnzymes if is2s(e)]
+ISOCLASS = equivalences(ENZYMES_2P, lambda e1, e2: (e1 % e2) and e1.is_equischizomer(e2))
+
+
+class Fragment(NamedTuple):
+    seq: Seq
+    end5: object  # enzyme
+    end3: object  # enzyme
+
+    def can_ligate(self, other):
+        compat = self.end3.compat % other.end5.compat
+        overhang_zero = self.overhang + other.overhang == 0
+        return compat and overhang_zero
+
+    def ligate(self, other):
+        if not self.can_ligate(other):
+            raise ValueError('Cannot ligate')
+        return Fragment(self.seq + other.seq, self.end5, other.end3)
+
+
 def chew_seq(seq, enzymes, frags):
-    prev_e = None
-    blunt_example = rst.BsrBI
+    BLUNT_EXAMPLE = rst.BsrBI
+    prev_e = BLUNT_EXAMPLE
     for i, e in enumerate(enzymes):
-        s1, s2 = e.catalyze(seq)  # FIXME: may cut more!!
-        seq = s2
+        try:
+            (s1, *s2) = e.catalyze(seq)
+        except NotImplementedError:
+            continue
+        s2 = Seq(''.join(map(str, s2)))
         if i == 0:
-            e1 = blunt_example
+            e1 = BLUNT_EXAMPLE
             e2 = e
         elif i == len(enzymes) - 1:
             e1 = e
-            e2 = blunt_example
+            e2 = BLUNT_EXAMPLE
         else:
             e1 = prev_e
             e2 = e
         prev_e = e
-        frags.append(Fragment(Seq(s1), e1, e2))
+        frags.add(Fragment(Seq(s1), e1, e2))
     return frags
 
 
+def with_sites_inverse(d):
+    res = defaultdict(list)
+    for e, sites in d.items():
+        for s in sites:
+            res[s].append(e)
+    return res
+
+
+def sites_to_equiv_reps(a, equiv_2p):
+    res = {}
+    for e, sites in a.with_sites().items():
+        k = next((k for k in equiv_2p if e % k), None)
+        if k:
+            res[k] = sites
+    return res
+
+
 def digestion_ligation(seqs, enzymes_2p, equiv_2p):
-    analyses = {i: rst.Analysis(enzymes_2p, s) for i, s in enumerate(seqs)}
-    for i, a in analyses.items():
-        for e in a.with_sites():
-            pass
+    frags = set()
+    for s in tqdm(seqs):
+        a = rst.Analysis(enzymes_2p, s)
+        sites = sites_to_equiv_reps(a, equiv_2p)
+        inverse = with_sites_inverse(sites)
+        for es in tqdm(itertools.product(*inverse.values())):
+            chew_seq(s, es, frags)
+    return frags
+
+
+def build(frags):
+    seqs = []
+
+    def _build(seq, end5, recur=1):
+        if end5 is BLUNT_EXAMPLE or recur == 5:
+            seqs.append(seq)
+            return
+        for f in (f for f in frags if f.end5 % end5):
+            _build(seq + f.seq, f.end3, recur=recur + 1)
+
+    for f in (f for f in frags if f.end5 is BLUNT_EXAMPLE):
+        _build(f.seq, f.end3)
+    return seqs
+
+
+def restriction(sequence1, sequence2):
+    frags = digestion_ligation([sequence1, sequence2], ENZYMES_2P, ISOCLASS)
+    return build(frags)
 
 
 def main():
-    # seq = Seq('AAAAGAATTCAAAAAAAA')
-    # mat = enzyme_equiv_matrix()
-    enzymes_2p = [e for e in rst.AllEnzymes if not is2s(e)]
-    enzymes_2s = [e for e in rst.AllEnzymes if is2s(e)]
-    isoclass = equivalences(enzymes_2p, lambda e1, e2: (e1 % e2) and e1.is_equischizomer(e2))
-    compatclass = equivalences(isoclass.keys(), lambda e1, e2: e1 % e2)
-    breakpoint()
-    seq1 = Seq('AAAAAGATCCAAAAAA')
-    seq2 = Seq('TTTTGGATCCTTTTTT')
-    digestion_ligation([seq1, seq2], enzymes_2p, equiv_2p)
-    print(list(rst.AllEnzymes))
-    # print(f'{rst.XhoII.elucidate()=}')
-    # print(f'{rst.XhoII.elucidate()=}')
-    # res = rst.Analysis(rst.AllEnzymes, seq)
-    # res.print_that()
-    print(f'{(rst.BsaI % rst.XhoII)=}')
-    # print(f'{(rst.BsaI % rst.BcoDI)=}')
+    seq1 = Seq('TCCCTGGGCTCTTTTAGTGGACGGAGACCCAGCTGTCAGTTTGTTGTAATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+    seq2 = Seq('CTGCCCAAGCCTACCGTGAATCATCTAATCCCTCCATGGAGTAAGTGGTGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
+    # seq1 = Seq('AAAAAGATCCAAAAAA')
+    # seq2 = Seq('TTTTGGATCCTTTTTT')
+    print(len(restriction(seq1, seq2)))
 
 
 if __name__ == '__main__':
