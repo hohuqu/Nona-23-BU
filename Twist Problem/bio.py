@@ -106,11 +106,11 @@ def digestion_ligation(seqs, enzymes_2p, equiv_2p):
     return frags
 
 
-def build(frags):
+def build(frags, max_recur):
     seqs = []
 
     def _build(seq, end5, recur=1):
-        if end5 is BLUNT_EXAMPLE or recur == 5:
+        if end5 is BLUNT_EXAMPLE or recur == max_recur:
             seqs.append(seq)
             return
         for f in (f for f in frags if f.end5 % end5):
@@ -121,9 +121,9 @@ def build(frags):
     return seqs
 
 
-def restriction(sequence1, sequence2):
+def restriction(sequence1, sequence2, max_recur=5):
     frags = digestion_ligation([sequence1, sequence2], ENZYMES_2P, ISOCLASS)
-    return build(frags)
+    return build(frags, max_recur)
 
 
 def main():
