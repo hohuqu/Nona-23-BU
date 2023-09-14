@@ -74,7 +74,7 @@ def chew_seq(seq, enzymes, frags):
             e1 = prev_e
             e2 = e
         prev_e = e
-        frags.add(Fragment(Seq(s1), e1, e2))
+        frags.append(Fragment(Seq(s1), e1, e2))
     return frags
 
 
@@ -96,14 +96,14 @@ def sites_to_equiv_reps(a, equiv_2p):
 
 
 def digestion_ligation(seqs, enzymes_2p, equiv_2p):
-    frags = set()
+    frags = []
     for s in tqdm(seqs):
         a = rst.Analysis(enzymes_2p, s)
         sites = sites_to_equiv_reps(a, equiv_2p)
         inverse = with_sites_inverse(sites)
         for es in tqdm(itertools.product(*inverse.values())):
             chew_seq(s, es, frags)
-    return frags
+    return set(frags)
 
 
 def build(frags, max_recur):
